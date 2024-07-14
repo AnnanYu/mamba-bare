@@ -8,7 +8,7 @@ We created this repository because we had some issues with getting [based](https
 
 ## Installation
 
-Setup conda enviroment and install torch. We test this repository using `python=3.8.18` and the Pytorch Preview (Nightly) `python=2.5.0.dev20240714+cu124` build with CUDA 12.4.
+Setup conda enviroment and install torch. We test this repository using `python=3.12.4` and the Pytorch Preview (Nightly) `python=2.5.0.dev20240714+cu124` build with CUDA 12.4.
 
 
 ```bash
