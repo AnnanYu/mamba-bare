@@ -23,7 +23,7 @@ from torch.utils.cpp_extension import (
 # ninja build does not work unless include_dirs are abs path
 this_dir = os.path.dirname(os.path.abspath(__file__))
 
-PACKAGE_NAME = "src"
+PACKAGE_NAME = "mamba_bare"
 FORCE_CXX11_ABI = os.getenv("MAMBA_FORCE_CXX11_ABI", "FALSE") == "TRUE"
 
 
@@ -252,7 +252,7 @@ class CachedWheelsCommand(_bdist_wheel):
 setup(
     name=PACKAGE_NAME,
     version='0.0.1',
-    packages=find_packages(include=['src', 'src.*']),
+    packages=find_packages(include=['mamba_core', 'mamba_core.*']),
     author="",
     author_email="",
     description="",
