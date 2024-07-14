@@ -1,5 +1,5 @@
 
-** Same base code to train MAMBA on NLP tasks **
+**A bare repository to train MAMBA on NLP tasks**
 
 This repository is a naked version of the [based](https://github.com/HazyResearch/based/tree/main) repository for training mamba. 
 
@@ -87,6 +87,4 @@ This project was made possible by a number of other open source projects; please
 - Our training code and sliding window implementation are based on Tri Dao's [FlashAttention](https://github.com/Dao-AILab/flash-attention). 
 - We use the conv1d kernel from [Mamba](https://github.com/state-spaces/mamba/tree/main).
 - We integrated the causal dot product kernel from [Fast Transformers](https://github.com/idiap/fast-transformers).
-- We integrated the based kernels from [Flash Linear Attention](https://github.com/sustcsonglin/flash-linear-attention).
-
 
