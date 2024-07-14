@@ -23,7 +23,7 @@ pip3 install --pre torch torchvision torchaudio --index-url https://download.pyt
 pip3 install packaging
 
 # clone the repository
-git clone https://github.com/erichson/mamba-light.git
+git clone https://github.com/erichson/mamba-bare
 
 # install based package
 cd mamba-light
