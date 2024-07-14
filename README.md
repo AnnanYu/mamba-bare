@@ -22,6 +22,9 @@ conda activate mamba
 # install latest torch build with cuda 12.4
 pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu124
 
+# install packaging
+pip3 install packaging
+
 # clone the repository
 git clone https://github.com/erichson/mamba-light.git
 

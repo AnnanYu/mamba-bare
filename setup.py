@@ -1,46 +1,29 @@
 import sys
 import warnings
 import os
-import re
-import ast
 from pathlib import Path
 from packaging.version import parse, Version
 import platform
-import shutil
 
 from setuptools import setup, find_packages
 import subprocess
 
-import urllib.request
-import urllib.error
 from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
 
 import torch
 from torch.utils.cpp_extension import (
     BuildExtension,
-    CppExtension,
     CUDAExtension,
     CUDA_HOME,
     HIP_HOME
 )
 
 
-#with open("README.md", "r", encoding="utf-8") as fh:
-#    long_description = fh.read()
-
 
 # ninja build does not work unless include_dirs are abs path
 this_dir = os.path.dirname(os.path.abspath(__file__))
 
 PACKAGE_NAME = "src"
-
-#BASE_WHEEL_URL = "https://github.com/state-spaces/mamba/releases/download/{tag_name}/{wheel_name}"
-
-# FORCE_BUILD: Force a fresh build locally, instead of attempting to find prebuilt wheels
-# SKIP_CUDA_BUILD: Intended to allow CI to use a simple `python setup.py sdist` run to copy over raw files, without any cuda compilation
-#FORCE_BUILD = os.getenv("MAMBA_FORCE_BUILD", "FALSE") == "TRUE"
-#SKIP_CUDA_BUILD = os.getenv("MAMBA_SKIP_CUDA_BUILD", "FALSE") == "TRUE"
-# For CI, we want the option to build with C++11 ABI since the nvcr images use C++11 ABI
 FORCE_CXX11_ABI = os.getenv("MAMBA_FORCE_CXX11_ABI", "FALSE") == "TRUE"
 
 
@@ -319,71 +302,3 @@ setup(
     ],
 )
 
-
-
-
-# from setuptools import setup, find_packages
-
-
-
-# # ensure that torch is installed, and send to torch website if not
-# try:
-#     import torch
-# except ModuleNotFoundError:
-#     raise ValueError("Please install torch first: https://pytorch.org/get-started/locally/")
-
-# _REQUIRED = [
-#     "packaging",
-#     "protobuf<4.24",
-#     "fsspec==2023.10.0",
-#     "datasets==2.15.0",
-#     "aiohttp", # https://github.com/aio-libs/aiohttp/issues/6794
-#     "dill==0.3.6",
-#     "multiprocess==0.70.14",
-#     "huggingface-hub==0.23.4",
-#     "transformers==4.36.2",
-#     "einops==0.7.0",
-#     "ftfy==6.1.3",
-#     "opt-einsum==3.3.0",
-#     "pydantic==2.5.3",
-#     "pydantic-core==2.14.6",
-#     "pykeops==2.2",
-#     "python-dotenv==1.0.0",
-#     "sentencepiece==0.2.0",
-#     "tokenizers==0.15.0",
-#     "six==1.16.0",
-#     "scikit-learn==1.3.2",
-#     "lm-eval==0.4.1",
-#     "ninja==1.11.1.1",
-#     #"flash-attn==2.5.2",
-#     #"causal-conv1d",
-
-#     "rich",
-#     "hydra-core==1.3.2",
-#     "hydra_colorlog",
-#     "wandb==0.16.2",
-#     "lightning-bolts==0.7.0",
-#     "lightning-utilities==0.10.0",
-#     "pytorch-lightning==1.8.6",
-#     "timm"    
-    
-# ]
-
-# _OPTIONAL = {
-#     "dev": [
-#         "pytest"
-#     ]
-# }
-
-
-# setup(
-#     name='mamba-light',
-#     version="0.0.1",
-#     packages=find_packages(include=['src', 'src.*']),
-#     author="",
-#     author_email="",
-#     description="",
-#     python_requires=">=3.8",
-#     install_requires=_REQUIRED,
-#     extras_require=_OPTIONAL,
-# )
