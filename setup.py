@@ -285,7 +285,7 @@ setup(
         "sentencepiece==0.2.0",
         "tokenizers==0.15.0",
         "six==1.16.0",
-        "scikit-learn==1.3.2",
+        "scikit-learn==1.5.1",
         "lm-eval==0.4.1",
         "ninja==1.11.1.1",
         #"flash-attn==2.5.2",
