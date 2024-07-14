@@ -1,5 +1,5 @@
 
-**A bare repository to train MAMBA on NLP tasks**
+# **A bare repository to train MAMBA on NLP tasks**
 
 This repository is a naked version of the [based](https://github.com/HazyResearch/based/tree/main) repository for training mamba. 
 
