@@ -274,7 +274,7 @@ setup(
         "dill==0.3.6",
         "multiprocess==0.70.14",
         "huggingface-hub==0.23.4",
-        "transformers==4.36.2",
+        "transformers==4.42.4",
         "einops==0.7.0",
         "ftfy==6.1.3",
         "opt-einsum==3.3.0",
