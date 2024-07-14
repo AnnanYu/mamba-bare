@@ -1,10 +1,7 @@
 
 # **A bare repository to train MAMBA on NLP tasks**
 
-This repository is a naked version of the [based](https://github.com/HazyResearch/based/tree/main) repository for training mamba. 
-
-We created this repository because we had some issues with getting [based](https://github.com/HazyResearch/based/tree/main) to run with CUDA 12.4.
-
+This repository combines scripts from the [based](https://github.com/HazyResearch/based/tree/main) and [Mamba](https://github.com/state-spaces/mamba/tree/main) repositories to train MAMBA models on NLP tasks.
 
 ## Installation
 
