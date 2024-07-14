@@ -12,12 +12,12 @@ from collections import namedtuple
 import torch
 import torch.nn as nn
 
-from src.mamba_ssm.modules.mamba_simple import Mamba, Block
-from src.mamba_ssm.utils.generation import GenerationMixin
-from src.mamba_ssm.utils.hf import load_config_hf, load_state_dict_hf
+from src.modules.mamba_simple import Mamba, Block
+from src.utils.generation import GenerationMixin
+from src.utils.hf import load_config_hf, load_state_dict_hf
 
 try:
-    from src.mamba_ssm.ops.triton.layernorm import RMSNorm, layer_norm_fn, rms_norm_fn
+    from src.ops.triton.layernorm import RMSNorm, layer_norm_fn, rms_norm_fn
 except ImportError:
     RMSNorm, layer_norm_fn, rms_norm_fn = None, None, None
 
