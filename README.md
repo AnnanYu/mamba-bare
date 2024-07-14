@@ -26,8 +26,8 @@ pip3 install packaging
 git clone https://github.com/erichson/mamba-bare
 
 # install based package
-cd mamba-light
-pip install -e .
+cd mamba-bare
+pip3 install -e .
 
 
 ```
