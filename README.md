@@ -70,8 +70,8 @@ python run.py experiment=example/mamba-360m trainer.devices=8
 
 
 
-This project was made possible by a number of other open source projects; please cite if you use their work! Notably:
-- Our training code and sliding window implementation are based on Tri Dao's [FlashAttention](https://github.com/Dao-AILab/flash-attention). 
-- We use the conv1d kernel from [Mamba](https://github.com/state-spaces/mamba/tree/main).
-- We integrated the causal dot product kernel from [Fast Transformers](https://github.com/idiap/fast-transformers).
+This project borrows code from a several open source projects:
+- [FlashAttention](https://github.com/Dao-AILab/flash-attention). 
+- [Mamba](https://github.com/state-spaces/mamba/tree/main).
+- [based](https://github.com/HazyResearch/based/tree/main).
 
