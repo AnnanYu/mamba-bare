@@ -283,7 +283,7 @@ setup(
         "pykeops==2.2",
         "python-dotenv==1.0.0",
         "sentencepiece==0.2.0",
-        "tokenizers==0.15.0",
+        "tokenizers==0.19.1",
         "six==1.16.0",
         "scikit-learn==1.5.1",
         "lm-eval==0.4.1",
