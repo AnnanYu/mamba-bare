@@ -56,13 +56,6 @@ cd causal-conv1d
 python setup.py install ## this takes a while ...
 cd ..
 
-
-# install mamba package
-#git clone https://github.com/state-spaces/mamba
-#cd mamba
-#pip install -e .
-#cd ..
-
 ```
 
 
