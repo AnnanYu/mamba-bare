@@ -40,10 +40,7 @@ To train a new model with CUDA 12.4, we need to install a few additional package
 # install apex
 git clone https://github.com/NVIDIA/apex
 cd apex
-
-# modify the setup.py and comment out the part that checks the CUDA driver.
-
-pip install -v --no-build-isolation --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
+python setup.py install --cuda_ext --cpp_ext # modify the setup.py and comment out lines 39-47 to avoid CUDA driver checks.
 cd ..
 
 

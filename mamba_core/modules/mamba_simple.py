@@ -8,7 +8,7 @@ import torch.nn.functional as F
 from torch import Tensor
 from einops import rearrange, repeat
 
-from src.ops.selective_scan_interface import selective_scan_fn, mamba_inner_fn, selective_scan_ref
+from mamba_core.ops.selective_scan_interface import selective_scan_fn, mamba_inner_fn, selective_scan_ref
 
 try:
     from causal_conv1d import causal_conv1d_fn, causal_conv1d_update
@@ -16,12 +16,12 @@ except ImportError:
     causal_conv1d_fn, causal_conv1d_update = None
 
 try:
-    from src.ops.triton.selective_state_update import selective_state_update
+    from mamba_core.ops.triton.selective_state_update import selective_state_update
 except ImportError:
     selective_state_update = None
 
 try:
-    from src.ops.triton.layernorm import RMSNorm, layer_norm_fn, rms_norm_fn
+    from mamba_core.ops.triton.layernorm import RMSNorm, layer_norm_fn, rms_norm_fn
 except ImportError:
     RMSNorm, layer_norm_fn, rms_norm_fn = None, None, None
 

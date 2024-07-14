@@ -1,52 +1,24 @@
 # Copyright (c) 2023, Albert Gu, Tri Dao.
-# This class is used to construct the Mamba architecture.
 
 import math
 from functools import partial
 import json
 import os
-import re
 
 from collections import namedtuple
 
 import torch
 import torch.nn as nn
 
-from src.modules.mamba_simple import Mamba, Block
-from src.utils.generation import GenerationMixin
-from src.utils.hf import load_config_hf, load_state_dict_hf
+from mamba_core.models.config_mamba import MambaConfig
+from mamba_core.modules.mamba_simple import Mamba, Block
+from mamba_core.utils.generation import GenerationMixin
+from mamba_core.utils.hf import load_config_hf, load_state_dict_hf
 
 try:
-    from src.ops.triton.layernorm import RMSNorm, layer_norm_fn, rms_norm_fn
+    from mamba_core.ops.triton.layernorm import RMSNorm, layer_norm_fn, rms_norm_fn
 except ImportError:
     RMSNorm, layer_norm_fn, rms_norm_fn = None, None, None
-
-from dataclasses import dataclass, field, asdict
-
-
-@dataclass
-class MambaConfig:
-    d_model: int = 1024
-    n_layer: int = 48
-    vocab_size: int = 50277
-    ssm_cfg: dict = field(default_factory=dict)
-    rms_norm: bool = True
-    residual_in_fp32: bool = True
-    fused_add_norm: bool = True
-    pad_vocab_size_multiple: int = 8
-    reorder_and_upcast_attn: bool = False
-    scale_attn_by_inverse_layer_idx: bool = False
-    n_positions: int = 2048
-    n_embd: int = 1024
-    n_head: int = 16
-    use_flash_attn: bool = False
-    fused_dropout_add_ln: bool = False
-    fused_mlp: bool = False
-    fused_bias_fc: bool = False
-    use_fast_path: bool = True
-
-    def to_dict(self):
-        return asdict(self)
 
 
 def create_block(
@@ -59,7 +31,6 @@ def create_block(
     layer_idx=None,
     device=None,
     dtype=None,
-    use_fast_path=True,
 ):
     if ssm_cfg is None:
         ssm_cfg = {}
@@ -74,7 +45,6 @@ def create_block(
         norm_cls=norm_cls,
         fused_add_norm=fused_add_norm,
         residual_in_fp32=residual_in_fp32,
-        use_fast_path=use_fast_path,
     )
     block.layer_idx = layer_idx
     return block
@@ -125,7 +95,6 @@ class MixerModel(nn.Module):
         initializer_cfg=None,
         fused_add_norm=False,
         residual_in_fp32=False,
-        use_fast_path=True,
         device=None,
         dtype=None,
     ) -> None:
@@ -155,7 +124,6 @@ class MixerModel(nn.Module):
                     residual_in_fp32=residual_in_fp32,
                     fused_add_norm=fused_add_norm,
                     layer_idx=i,
-                    use_fast_path=use_fast_path,
                     **factory_kwargs,
                 )
                 for i in range(n_layer)
@@ -181,8 +149,6 @@ class MixerModel(nn.Module):
         }
 
     def forward(self, input_ids, inference_params=None):
-        if type(input_ids) == list:
-            input_ids = input_ids[0]
         hidden_states = self.embedding(input_ids)
         residual = None
         for layer in self.layers:
@@ -239,7 +205,6 @@ class MambaLMHeadModel(nn.Module, GenerationMixin):
             initializer_cfg=initializer_cfg,
             fused_add_norm=fused_add_norm,
             residual_in_fp32=residual_in_fp32,
-            use_fast_path=config.use_fast_path,
             **factory_kwargs,
         )
         self.lm_head = nn.Linear(d_model, vocab_size, bias=False, **factory_kwargs)
@@ -273,18 +238,11 @@ class MambaLMHeadModel(nn.Module, GenerationMixin):
         return CausalLMOutput(logits=lm_logits)
 
     @classmethod
-    def from_pretrained_hf(cls, pretrained_model_name, device=None, dtype=None, **kwargs):
+    def from_pretrained(cls, pretrained_model_name, device=None, dtype=None, **kwargs):
         config_data = load_config_hf(pretrained_model_name)
         config = MambaConfig(**config_data)
         model = cls(config, device=device, dtype=dtype, **kwargs)
-        state_dict = load_state_dict_hf(pretrained_model_name, device=device, dtype=dtype)
-
-        # remove the 'model.' prefix from the keys
-        state_dict = {re.sub("^model\.", "", k): v for k, v in state_dict.items()}
-        # remove Unexpected key(s) in state_dict: "train_metrics.num-tokens.count", "val_metrics.num-tokens.count", "test_metrics.num-tokens.count". from the state_dict
-        state_dict = {k: v for k, v in state_dict.items() if "metrics" not in k}
-
-        model.load_state_dict(state_dict)
+        model.load_state_dict(load_state_dict_hf(pretrained_model_name, device=device, dtype=dtype))
         return model
 
     def save_pretrained(self, save_directory):
@@ -304,4 +262,3 @@ class MambaLMHeadModel(nn.Module, GenerationMixin):
         config_path = os.path.join(save_directory, 'config.json')
         with open(config_path, 'w') as f:
             json.dump(self.config.__dict__, f)
-
